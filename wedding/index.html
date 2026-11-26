@@ -27,7 +27,7 @@ body { display: grid; place-items: center; background: #EFE8DC; color: #5A4326; 
 <p id="msg" hidden>This invitation link isn’t quite right.<br>Please ask the family for a fresh one.</p>
 <script>
 (async function () {
-  var W = { s: "SiiMfuQ2+ibyhCbddmGxvQ==", i: "XSeV75MSpx1ogwid", c: "PwD5IgiXdVroqD5pzbFUWG/EgW7y2wnRTenW4hkwGJrHRRejKBQ=", n: 200000 };
+  var W = { s: "drKxUHEwgaN7emt9Ju/Efw==", i: "kOcU9RR+OGV+ZA/s", c: "I+Mj0xkt9WfalxkU6TfMdKgTL/yVB8QdgP/53gIWDLmD4YYuUow=", n: 200000 };
   function bytes(s) { var b = atob(s), a = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) a[i] = b.charCodeAt(i); return a; }
   try {
     // the word is this page's own address; it opens the invitation's real key, which is never published in the clear
@@ -36,7 +36,7 @@ body { display: grid; place-items: center; background: #EFE8DC; color: #5A4326; 
     var kek = await crypto.subtle.deriveKey({ name: "PBKDF2", salt: bytes(W.s), iterations: W.n, hash: "SHA-256" }, base, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
     var key = new TextDecoder().decode(await crypto.subtle.decrypt({ name: "AES-GCM", iv: bytes(W.i) }, kek, bytes(W.c)));
     var guest = location.hash.length > 1 ? "/" + location.hash.slice(1) : "";
-    location.replace("/#" + key + guest);
+    location.replace("../?w=" + encodeURIComponent(word) + "#" + key + guest);     // the invitation puts this short address back in the bar
   } catch (e) { document.getElementById("msg").hidden = false; }
 })();
 </script>
