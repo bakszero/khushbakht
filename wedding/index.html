@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>if(location.protocol==="http:"&&!/^(localhost|127\.|\[::1\])/.test(location.host))location.replace("https://"+location.host+location.pathname+location.search+location.hash)</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#EFE8DC">
+<title>You’re invited</title>
+<meta name="description" content="A private wedding invitation.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="You’re invited">
+<meta property="og:description" content="A private wedding invitation. Tap to open.">
+<meta property="og:url" content="https://khushbakht.in/wedding">
+<meta property="og:image" content="https://khushbakht.in/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<style>
+html, body { height: 100%; margin: 0; }
+body { display: grid; place-items: center; background: #EFE8DC; color: #5A4326; font: 18px/1.6 Georgia, "Times New Roman", serif; text-align: center; padding: 0 24px; box-sizing: border-box; }
+</style>
+</head>
+<body>
+<p id="msg" hidden>This invitation link isn’t quite right.<br>Please ask the family for a fresh one.</p>
+<script>
+(async function () {
+  var W = { s: "SiiMfuQ2+ibyhCbddmGxvQ==", i: "XSeV75MSpx1ogwid", c: "PwD5IgiXdVroqD5pzbFUWG/EgW7y2wnRTenW4hkwGJrHRRejKBQ=", n: 200000 };
+  function bytes(s) { var b = atob(s), a = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) a[i] = b.charCodeAt(i); return a; }
+  try {
+    // the word is this page's own address; it opens the invitation's real key, which is never published in the clear
+    var word = decodeURIComponent(location.pathname).replace(/^\/+|\/+$/g, "").split("/").pop().toLowerCase();
+    var base = await crypto.subtle.importKey("raw", new TextEncoder().encode(word), "PBKDF2", false, ["deriveKey"]);
+    var kek = await crypto.subtle.deriveKey({ name: "PBKDF2", salt: bytes(W.s), iterations: W.n, hash: "SHA-256" }, base, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+    var key = new TextDecoder().decode(await crypto.subtle.decrypt({ name: "AES-GCM", iv: bytes(W.i) }, kek, bytes(W.c)));
+    var guest = location.hash.length > 1 ? "/" + location.hash.slice(1) : "";
+    location.replace("/#" + key + guest);
+  } catch (e) { document.getElementById("msg").hidden = false; }
+})();
+</script>
+</body>
+</html>

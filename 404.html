@@ -6,8 +6,10 @@
 <meta name="robots" content="noindex, nofollow">
 <title>You’re invited</title>
 <script>
-/* any other address on this site leads to the invitation, keeping the private part of the link (after #) */
-location.replace("/" + location.hash);
+/* an address typed with capitals (phones like to capitalise) is tried again in small letters; any other address on
+   this site leads to the invitation, keeping the private part of the link (after #) */
+var p = location.pathname, low = p.toLowerCase();
+location.replace((p !== low ? low.replace(/\/*$/, "/") : "/") + location.hash);
 </script>
 <style>
 html, body { height: 100%; margin: 0; }
